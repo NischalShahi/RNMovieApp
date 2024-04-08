@@ -1,11 +1,11 @@
 import {ApiResponse, MovieSDK, MovieSearchOptions} from './types';
 
-const IMDBOT_SEARCH_URL = 'https://search.imdbot.workers.dev';
+const IMDBOT_URL = 'https://search.imdbot.workers.dev';
 
 const movieSDK: MovieSDK = {
   async getRandomMovies(): Promise<ApiResponse> {
     try {
-      const response = await fetch(`${IMDBOT_SEARCH_URL}?q=a`);
+      const response = await fetch(`${IMDBOT_URL}?q=a`);
       if (!response.ok) {
         throw new Error('Failed to fetch random movies');
       }
@@ -19,7 +19,7 @@ const movieSDK: MovieSDK = {
 
   async searchMovies(options: MovieSearchOptions): Promise<ApiResponse> {
     try {
-      const response = await fetch(`${IMDBOT_SEARCH_URL}?q=${options.query}`);
+      const response = await fetch(`${IMDBOT_URL}?q=${options.query}`);
       if (!response.ok) {
         throw new Error('Failed to search movies');
       }
