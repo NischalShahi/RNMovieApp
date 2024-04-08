@@ -1,18 +1,31 @@
+import {useNavigation} from '@react-navigation/native';
+import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
-import {Image, StyleSheet, Text, View} from 'react-native';
+import {Image, Pressable, StyleSheet, Text} from 'react-native';
+import {RootStackParamList} from '../navigation/RootStack';
 import {Movie} from '../sdks/movieSdk/types';
+import {theme} from '../utils/constants';
 
 export type MovieListItemProps = {
   movie: Movie;
 };
+type MovieDetailScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'MovieDetail'
+>;
 
 export const MovieListItem: React.FC<MovieListItemProps> = ({movie}) => {
+  const navigation = useNavigation<MovieDetailScreenNavigationProp>();
+
+  const onPress = () => {
+    navigation.navigate('MovieDetail', {movie: movie});
+  };
   return (
-    <View style={styles.container}>
+    <Pressable onPress={onPress} style={styles.container}>
       <Image source={{uri: movie['#IMG_POSTER']}} style={styles.image} />
       <Text style={styles.title}>{movie['#TITLE']}</Text>
       <Text style={styles.info}>{movie['#YEAR']}</Text>
-    </View>
+    </Pressable>
   );
 };
 
@@ -23,10 +36,15 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   image: {
-    height: 150,
+    height: 250,
     resizeMode: 'cover',
     borderRadius: 10,
   },
-  title: {marginTop: 5, fontSize: 16, color: '#e62d2d', fontWeight: 'bold'},
+  title: {
+    marginTop: 5,
+    fontSize: 16,
+    color: theme.colors.netflixRed,
+    fontWeight: 'bold',
+  },
   info: {fontSize: 14, color: '#efeeee'},
 });

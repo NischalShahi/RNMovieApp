@@ -25,4 +25,5 @@ export interface MovieSearchOptions {
 export interface MovieSDK {
   getRandomMovies: () => Promise<ApiResponse>;
   searchMovies: (options: MovieSearchOptions) => Promise<ApiResponse>;
+  getMovieDetails: (imdbId: string) => Promise<ApiResponse>;
 }
