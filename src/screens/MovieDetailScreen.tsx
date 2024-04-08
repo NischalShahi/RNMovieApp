@@ -23,14 +23,19 @@ export const MoveDetailScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View>
-          <Pressable
-            onPress={() => navigation.goBack()}
-            style={styles.iconContainer}>
-            <Image
-              style={styles.icon}
-              source={require('../assets/icons/iconBack.png')}
-            />
-          </Pressable>
+          <View style={styles.topNavContainer}>
+            <View style={styles.iconContainer}>
+              <Pressable onPress={() => navigation.goBack()}>
+                <Image
+                  style={styles.icon}
+                  source={require('../assets/icons/iconBack.png')}
+                />
+              </Pressable>
+            </View>
+            <View style={styles.rankContainer}>
+              <Text style={styles.rankText}># {movie['#RANK']}</Text>
+            </View>
+          </View>
           <Image
             source={{uri: movie['#IMG_POSTER']}}
             style={{
@@ -40,13 +45,8 @@ export const MoveDetailScreen: React.FC = () => {
           />
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{movie['#TITLE']}</Text>
-            <View style={styles.rowContainer}>
-              <View style={styles.yearContainer}>
-                <Text style={styles.info}>{movie['#YEAR']}</Text>
-              </View>
-              <View style={styles.rankContainer}>
-                <Text style={styles.rankText}># {movie['#RANK']}</Text>
-              </View>
+            <View style={styles.yearContainer}>
+              <Text style={styles.info}>{movie['#YEAR']}</Text>
             </View>
             <View style={styles.castsContainer}>
               <Text style={styles.cast}>{movie['#ACTORS']}</Text>
@@ -59,11 +59,17 @@ export const MoveDetailScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  iconContainer: {
+  topNavContainer: {
     position: 'absolute',
     left: 10,
     top: 10,
     zIndex: 10,
+    right: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  iconContainer: {
+    alignSelf: 'flex-start',
     backgroundColor: '#949494da',
     borderRadius: 25,
     justifyContent: 'center',
@@ -78,12 +84,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.backgroundBlack,
   },
-  rowContainer: {
-    flexDirection: 'row',
-    gap: 10,
-  },
   rankContainer: {
-    backgroundColor: theme.colors.netflixRed,
+    backgroundColor: theme.colors.backgroundYellow,
     padding: 5,
     borderRadius: 20,
     marginTop: 5,
@@ -119,12 +121,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   yearContainer: {
+    alignSelf: 'flex-start',
     backgroundColor: '#90909068',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 5,
     borderRadius: 20,
-    marginTop: 5,
+    marginVertical: 10,
     paddingHorizontal: 10,
   },
 });
