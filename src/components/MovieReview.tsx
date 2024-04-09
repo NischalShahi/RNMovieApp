@@ -53,5 +53,6 @@ const styles = StyleSheet.create({
     textAlign: 'right',
     fontSize: 16,
     fontWeight: 'bold',
+    fontStyle: 'italic',
   },
 });
