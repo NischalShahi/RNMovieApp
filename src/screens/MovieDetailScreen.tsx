@@ -1,4 +1,5 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
+import he from 'he';
 import React from 'react';
 import {
   Image,
@@ -10,6 +11,9 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {MovieCasts} from '../components/MovieCasts';
+import {MovieDescription} from '../components/MovieDescription';
+import {MovieRatings} from '../components/MovieRatings';
 import {useMovieDetails} from '../hooks/useMovieDetails';
 import {Movie} from '../sdks/movieSdk/types';
 import {theme} from '../utils/constants';
@@ -18,7 +22,7 @@ export const MoveDetailScreen: React.FC = () => {
   const {params} = useRoute();
   const {movie} = params as {movie: Movie};
   const deviceWidth = useWindowDimensions().width;
-  const aspectRatio = movie?.photo_width / movie?.photo_height;
+  // const aspectRatio = movie?.photo_width / movie?.photo_height; <--- To be used if we want to display the full image
   const navigation = useNavigation();
   const imdbId = movie['#IMDB_ID'];
   const {data: movieDetails, isLoading} = useMovieDetails({
@@ -28,8 +32,9 @@ export const MoveDetailScreen: React.FC = () => {
   const description = movieDetails?.short?.description;
   const aggregateRating = movieDetails?.top?.ratingsSummary?.aggregateRating;
   const featuredReviews = movieDetails?.top?.featuredReviews;
+  const casts = movieDetails?.main?.cast?.edges;
 
-  console.log('featuredReviews--->', featuredReviews?.edges[0]?.node);
+  // console.log('featuredReviews--->', featuredReviews?.edges[0]?.node);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -52,17 +57,23 @@ export const MoveDetailScreen: React.FC = () => {
             source={{uri: movie['#IMG_POSTER']}}
             style={{
               width: deviceWidth,
-              height: deviceWidth / aspectRatio,
+              height: deviceWidth,
             }}
+            resizeMode="cover"
           />
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{movie['#TITLE']}</Text>
-            <View style={styles.yearContainer}>
-              <Text style={styles.info}>{movie['#YEAR']}</Text>
+
+            <View style={styles.rowContainer}>
+              <View style={styles.yearContainer}>
+                <Text style={styles.info}>{movie['#YEAR']}</Text>
+              </View>
+              {aggregateRating && (
+                <MovieRatings rating={aggregateRating} total={10} />
+              )}
             </View>
-            <View style={styles.castsContainer}>
-              <Text style={styles.cast}>{movie['#ACTORS']}</Text>
-            </View>
+            {description && <MovieDescription description={description} />}
+            {casts && <MovieCasts casts={casts} />}
           </View>
         </View>
       </ScrollView>
@@ -124,14 +135,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: 'white',
   },
-  cast: {
-    fontSize: 16,
-    color: 'white',
-    fontWeight: 'bold',
-  },
-  castsContainer: {
-    marginTop: 10,
-  },
   yearContainer: {
     alignSelf: 'flex-start',
     backgroundColor: '#90909068',
@@ -141,5 +144,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginVertical: 10,
     paddingHorizontal: 10,
+  },
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
 });

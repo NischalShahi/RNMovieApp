@@ -135,6 +135,25 @@ export interface MovieDetails {
       edges: any[];
     };
   };
+  main: {
+    cast: {
+      edges: {
+        node: {
+          name: {
+            id: string;
+            nameText: {
+              text: string;
+            };
+            primaryImage: {
+              url: string;
+              width: number;
+              height: number;
+            };
+          };
+        };
+      }[];
+    };
+  };
 }
 
 export interface Movie {
