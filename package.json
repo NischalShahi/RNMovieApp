@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "web": "cd MovieWebApp && npm run dev",
+    "web:build": "cd MovieWebApp && npm run build"
   },
   "dependencies": {
     "@react-navigation/native": "^6.1.17",

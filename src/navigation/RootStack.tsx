@@ -5,8 +5,8 @@ import {MoveDetailScreen} from '../screens/MovieDetailScreen';
 import {Movie} from '../sdks/movieSdk/types';
 
 export type RootStackParamList = {
-  MovieDetail: {movie: Movie};
-  Home: undefined;
+  MovieDetail?: {movie: Movie};
+  Home?: undefined;
 };
 
 export const RootStack: React.FC<RootStackParamList> = () => {
