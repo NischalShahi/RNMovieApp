@@ -22,7 +22,6 @@ type ReviewProps = {
 
 export const MovieReview: React.FC<ReviewProps> = ({review}) => {
   const {author, text} = review;
-  console.log('this is review', review);
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Featured Review</Text>

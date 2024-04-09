@@ -16,8 +16,6 @@ function App() {
     getMovies();
   }, []);
 
-  console.log('this is movies', movies);
-
   return (
     <>
       <div style={{display: 'flex', flexDirection: 'column'}}>
