@@ -52,7 +52,7 @@ export const MoveDetailScreen: React.FC = () => {
   const {params} = useRoute();
   const {movie} = params as {movie: Movie};
   const deviceWidth = useWindowDimensions().width;
-  // const aspectRatio = movie?.photo_width / movie?.photo_height; <--- To be used if we want to display the full image
+  const aspectRatio = movie?.photo_width / movie?.photo_height;
   const navigation = useNavigation();
   const imdbId = movie['#IMDB_ID'];
   const {
@@ -89,7 +89,7 @@ export const MoveDetailScreen: React.FC = () => {
             source={{uri: movie['#IMG_POSTER']}}
             style={{
               width: deviceWidth,
-              height: deviceWidth,
+              height: deviceWidth / aspectRatio,
             }}
             resizeMode="cover"
           />
