@@ -45,10 +45,12 @@ If everything is set up _correctly_, you should see your new app running in your
 
 This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
 
-### Additionally, to run a webApp, use the following command:
+### BONUS, to run a simple webApp, use the following command:
 
 ```bash
 # using npm
+cd MovieWebApp && npm i
+cd ..
 npm run web
 
 ```

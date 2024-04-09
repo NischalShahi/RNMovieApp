@@ -1,6 +1,6 @@
 import {FlashList} from '@shopify/flash-list';
 import React, {useState} from 'react';
-import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import {LoadingSkeleton} from '../components/LoadingSkeleton';
 import {MovieListItem} from '../components/MovieListItem';
 import {SearchBar} from '../components/SearchBar';
@@ -61,6 +61,9 @@ export const HomeScreen: React.FC = () => {
     return (
       <View style={styles.errorContainer}>
         <Text style={styles.errorText}>Something went wrong</Text>
+        <Pressable style={styles.retryButton} onPress={() => refetch()}>
+          <Text style={styles.retryText}>Retry</Text>
+        </Pressable>
       </View>
     );
   }
@@ -92,6 +95,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.backgroundBlack,
   },
-  errorText: {color: theme.colors.netflixRed},
+  errorText: {color: theme.colors.netflixRed, fontSize: 16, fontWeight: 'bold'},
   container: {flex: 1, backgroundColor: theme.colors.backgroundBlack},
+  retryButton: {
+    backgroundColor: theme.colors.netflixRed,
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 14,
+    paddingHorizontal: 20,
+  },
+  retryText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
 });
