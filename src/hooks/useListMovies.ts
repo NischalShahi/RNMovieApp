@@ -20,7 +20,7 @@ export const useListMovies = ({searchQuery}: {searchQuery?: string}) => {
   }, [searchQuery]);
 
   return useQuery<ApiResponse, Error>({
-    queryKey: ['movieList', debouncedQuery],
+    queryKey: ['movieList', 'movies', debouncedQuery],
     queryFn: async () => {
       if (debouncedQuery) {
         return movieSDK.searchMovies({query: debouncedQuery});

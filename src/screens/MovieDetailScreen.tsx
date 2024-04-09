@@ -10,6 +10,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {useMovieDetails} from '../hooks/useMovieDetails';
 import {Movie} from '../sdks/movieSdk/types';
 import {theme} from '../utils/constants';
 
@@ -17,8 +18,19 @@ export const MoveDetailScreen: React.FC = () => {
   const {params} = useRoute();
   const {movie} = params as {movie: Movie};
   const deviceWidth = useWindowDimensions().width;
-  const aspectRatio = movie.photo_width / movie.photo_height;
+  const aspectRatio = movie?.photo_width / movie?.photo_height;
   const navigation = useNavigation();
+  const imdbId = movie['#IMDB_ID'];
+  const {data: movieDetails, isLoading} = useMovieDetails({
+    imdbID: imdbId,
+  });
+
+  const description = movieDetails?.short?.description;
+  const aggregateRating = movieDetails?.top?.ratingsSummary?.aggregateRating;
+  const featuredReviews = movieDetails?.top?.featuredReviews;
+
+  console.log('featuredReviews--->', featuredReviews?.edges[0]?.node);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
