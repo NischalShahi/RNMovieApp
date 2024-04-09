@@ -1,5 +1,4 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
-import he from 'he';
 import React from 'react';
 import {
   Image,
@@ -14,6 +13,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 import {MovieCasts} from '../components/MovieCasts';
 import {MovieDescription} from '../components/MovieDescription';
 import {MovieRatings} from '../components/MovieRatings';
+import {MovieReview} from '../components/MovieReview';
 import {useMovieDetails} from '../hooks/useMovieDetails';
 import {Movie} from '../sdks/movieSdk/types';
 import {theme} from '../utils/constants';
@@ -31,10 +31,8 @@ export const MoveDetailScreen: React.FC = () => {
 
   const description = movieDetails?.short?.description;
   const aggregateRating = movieDetails?.top?.ratingsSummary?.aggregateRating;
-  const featuredReviews = movieDetails?.top?.featuredReviews;
+  const featuredReview = movieDetails?.top?.featuredReviews?.edges[0]?.node;
   const casts = movieDetails?.main?.cast?.edges;
-
-  // console.log('featuredReviews--->', featuredReviews?.edges[0]?.node);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -63,7 +61,6 @@ export const MoveDetailScreen: React.FC = () => {
           />
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{movie['#TITLE']}</Text>
-
             <View style={styles.rowContainer}>
               <View style={styles.yearContainer}>
                 <Text style={styles.info}>{movie['#YEAR']}</Text>
@@ -74,6 +71,7 @@ export const MoveDetailScreen: React.FC = () => {
             </View>
             {description && <MovieDescription description={description} />}
             {casts && <MovieCasts casts={casts} />}
+            {featuredReview && <MovieReview review={featuredReview} />}
           </View>
         </View>
       </ScrollView>

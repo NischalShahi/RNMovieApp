@@ -55,7 +55,7 @@ export const MovieCasts: React.FC<MovieCastsProps> = ({casts}) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 10,
+    marginTop: 15,
   },
   castName: {
     color: 'white',
