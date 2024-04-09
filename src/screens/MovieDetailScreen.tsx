@@ -10,6 +10,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
+import {LoadingSkeleton} from '../components/LoadingSkeleton';
 import {MovieCasts} from '../components/MovieCasts';
 import {MovieDescription} from '../components/MovieDescription';
 import {MovieRatings} from '../components/MovieRatings';
@@ -18,6 +19,35 @@ import {useMovieDetails} from '../hooks/useMovieDetails';
 import {Movie} from '../sdks/movieSdk/types';
 import {theme} from '../utils/constants';
 
+const LoadingSection = () => {
+  return (
+    <View style={{marginTop: 10, gap: 10}}>
+      <LoadingSkeleton containerStyles={{borderRadius: 10, height: 80}} />
+      <LoadingSkeleton
+        containerStyles={{
+          borderRadius: 10,
+          height: 20,
+          width: 100,
+          marginTop: 10,
+        }}
+      />
+      <View style={{flexDirection: 'row', gap: 10}}>
+        {Array.from({length: 4}).map((_, index) => (
+          <LoadingSkeleton
+            key={index}
+            containerStyles={{
+              borderRadius: 10,
+              height: 120,
+              width: 100,
+              marginTop: 10,
+            }}
+          />
+        ))}
+      </View>
+    </View>
+  );
+};
+
 export const MoveDetailScreen: React.FC = () => {
   const {params} = useRoute();
   const {movie} = params as {movie: Movie};
@@ -25,7 +55,11 @@ export const MoveDetailScreen: React.FC = () => {
   // const aspectRatio = movie?.photo_width / movie?.photo_height; <--- To be used if we want to display the full image
   const navigation = useNavigation();
   const imdbId = movie['#IMDB_ID'];
-  const {data: movieDetails, isLoading} = useMovieDetails({
+  const {
+    data: movieDetails,
+    isLoading,
+    isFetching,
+  } = useMovieDetails({
     imdbID: imdbId,
   });
 
@@ -59,6 +93,7 @@ export const MoveDetailScreen: React.FC = () => {
             }}
             resizeMode="cover"
           />
+
           <View style={styles.infoContainer}>
             <Text style={styles.title}>{movie['#TITLE']}</Text>
             <View style={styles.rowContainer}>
@@ -69,9 +104,15 @@ export const MoveDetailScreen: React.FC = () => {
                 <MovieRatings rating={aggregateRating} total={10} />
               )}
             </View>
-            {description && <MovieDescription description={description} />}
-            {casts && <MovieCasts casts={casts} />}
-            {featuredReview && <MovieReview review={featuredReview} />}
+            {isLoading || isFetching ? (
+              <LoadingSection />
+            ) : (
+              <>
+                {description && <MovieDescription description={description} />}
+                {casts && <MovieCasts casts={casts} />}
+                {featuredReview && <MovieReview review={featuredReview} />}
+              </>
+            )}
           </View>
         </View>
       </ScrollView>
