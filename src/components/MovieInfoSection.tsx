@@ -81,46 +81,6 @@ export const MovieInfoSection = ({
 };
 
 const styles = StyleSheet.create({
-  topNavContainer: {
-    position: 'absolute',
-    left: 10,
-    top: 10,
-    zIndex: 10,
-    right: 10,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  iconContainer: {
-    alignSelf: 'flex-start',
-    backgroundColor: '#949494da',
-    borderRadius: 25,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 5,
-  },
-  icon: {
-    height: 35,
-    width: 35,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: theme.colors.backgroundBlack,
-  },
-  rankContainer: {
-    backgroundColor: theme.colors.backgroundYellow,
-    padding: 5,
-    borderRadius: 20,
-    marginTop: 5,
-    paddingHorizontal: 15,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  rankText: {
-    fontSize: 14,
-    color: '#000000',
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
   infoContainer: {
     marginTop: 10,
     padding: 10,

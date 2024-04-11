@@ -9,26 +9,24 @@ import {theme} from '../utils/constants';
 
 export type MovieListItemProps = {
   movie: Movie;
-  index: number;
 };
 type MovieDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'MovieDetail'
 >;
 
-export const MovieListItem: React.FC<MovieListItemProps> = ({movie, index}) => {
+export const MovieListItem: React.FC<MovieListItemProps> = ({movie}) => {
   const navigation = useNavigation<MovieDetailScreenNavigationProp>();
 
   const onPress = () => {
     navigation.navigate('MovieDetail', {
       movie: movie,
-      sharedTransitionTag: index.toString(),
     });
   };
   return (
     <Pressable onPress={onPress} style={styles.container}>
       <Animated.Image
-        sharedTransitionTag={index.toString()}
+        sharedTransitionTag={movie['#IMDB_ID']}
         source={{uri: movie['#IMG_POSTER']}}
         style={styles.image}
       />
