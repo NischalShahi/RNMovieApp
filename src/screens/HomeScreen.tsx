@@ -77,7 +77,9 @@ export const HomeScreen: React.FC = () => {
         <FlashList
           keyExtractor={item => item['#IMDB_ID']}
           data={data?.description || []}
-          renderItem={({item}) => <MovieListItem movie={item} />}
+          renderItem={({item, index}) => (
+            <MovieListItem movie={item} index={index} />
+          )}
           estimatedItemSize={20}
           numColumns={2}
           refreshing={isRefetching}

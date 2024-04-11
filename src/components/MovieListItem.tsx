@@ -1,28 +1,37 @@
 import {useNavigation} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 import React from 'react';
-import {Image, Pressable, StyleSheet, Text} from 'react-native';
+import {Pressable, StyleSheet, Text} from 'react-native';
+import Animated from 'react-native-reanimated';
 import {RootStackParamList} from '../navigation/RootStack';
 import {Movie} from '../sdks/movieSdk/types';
 import {theme} from '../utils/constants';
 
 export type MovieListItemProps = {
   movie: Movie;
+  index: number;
 };
 type MovieDetailScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
   'MovieDetail'
 >;
 
-export const MovieListItem: React.FC<MovieListItemProps> = ({movie}) => {
+export const MovieListItem: React.FC<MovieListItemProps> = ({movie, index}) => {
   const navigation = useNavigation<MovieDetailScreenNavigationProp>();
 
   const onPress = () => {
-    navigation.navigate('MovieDetail', {movie: movie});
+    navigation.navigate('MovieDetail', {
+      movie: movie,
+      sharedTransitionTag: index.toString(),
+    });
   };
   return (
     <Pressable onPress={onPress} style={styles.container}>
-      <Image source={{uri: movie['#IMG_POSTER']}} style={styles.image} />
+      <Animated.Image
+        sharedTransitionTag={index.toString()}
+        source={{uri: movie['#IMG_POSTER']}}
+        style={styles.image}
+      />
       <Text style={styles.title}>{movie['#TITLE']}</Text>
       <Text style={styles.info}>{movie['#YEAR']}</Text>
     </Pressable>

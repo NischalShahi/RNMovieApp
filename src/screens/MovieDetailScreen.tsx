@@ -9,64 +9,23 @@ import {
   View,
   useWindowDimensions,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {LoadingSkeleton} from '../components/LoadingSkeleton';
-import {MovieCasts} from '../components/MovieCasts';
-import {MovieDescription} from '../components/MovieDescription';
-import {MovieRatings} from '../components/MovieRatings';
-import {MovieReview} from '../components/MovieReview';
-import {useMovieDetails} from '../hooks/useMovieDetails';
+import {MovieInfoSection} from '../components/MovieInfoSection';
 import {Movie} from '../sdks/movieSdk/types';
 import {theme} from '../utils/constants';
 
-const LoadingSection = () => {
-  return (
-    <View style={{marginTop: 10, gap: 10}}>
-      <LoadingSkeleton containerStyles={{borderRadius: 10, height: 80}} />
-      <LoadingSkeleton
-        containerStyles={{
-          borderRadius: 10,
-          height: 20,
-          width: 100,
-          marginTop: 10,
-        }}
-      />
-      <View style={{flexDirection: 'row', gap: 10}}>
-        {Array.from({length: 4}).map((_, index) => (
-          <LoadingSkeleton
-            key={index}
-            containerStyles={{
-              borderRadius: 10,
-              height: 120,
-              width: 100,
-              marginTop: 10,
-            }}
-          />
-        ))}
-      </View>
-    </View>
-  );
-};
-
 export const MoveDetailScreen: React.FC = () => {
   const {params} = useRoute();
-  const {movie} = params as {movie: Movie};
+  const {movie, sharedTransitionTag} = params as {
+    movie: Movie;
+    sharedTransitionTag: string;
+  };
   const deviceWidth = useWindowDimensions().width;
   const aspectRatio = movie?.photo_width / movie?.photo_height;
   const navigation = useNavigation();
   const imdbId = movie['#IMDB_ID'];
-  const {
-    data: movieDetails,
-    isLoading,
-    isFetching,
-  } = useMovieDetails({
-    imdbID: imdbId,
-  });
-
-  const description = movieDetails?.short?.description;
-  const aggregateRating = movieDetails?.top?.ratingsSummary?.aggregateRating;
-  const featuredReview = movieDetails?.top?.featuredReviews?.edges[0]?.node;
-  const casts = movieDetails?.main?.cast?.edges;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -85,7 +44,8 @@ export const MoveDetailScreen: React.FC = () => {
               <Text style={styles.rankText}># {movie['#RANK']}</Text>
             </View>
           </View>
-          <Image
+          <Animated.Image
+            sharedTransitionTag={sharedTransitionTag}
             source={{uri: movie['#IMG_POSTER']}}
             style={{
               width: deviceWidth,
@@ -93,27 +53,7 @@ export const MoveDetailScreen: React.FC = () => {
             }}
             resizeMode="cover"
           />
-
-          <View style={styles.infoContainer}>
-            <Text style={styles.title}>{movie['#TITLE']}</Text>
-            <View style={styles.rowContainer}>
-              <View style={styles.yearContainer}>
-                <Text style={styles.info}>{movie['#YEAR']}</Text>
-              </View>
-              {aggregateRating && (
-                <MovieRatings rating={aggregateRating} total={10} />
-              )}
-            </View>
-            {isLoading || isFetching ? (
-              <LoadingSection />
-            ) : (
-              <>
-                {description && <MovieDescription description={description} />}
-                {casts && <MovieCasts casts={casts} />}
-                {featuredReview && <MovieReview review={featuredReview} />}
-              </>
-            )}
-          </View>
+          <MovieInfoSection imdbId={imdbId} movie={movie} />
         </View>
       </ScrollView>
     </SafeAreaView>
